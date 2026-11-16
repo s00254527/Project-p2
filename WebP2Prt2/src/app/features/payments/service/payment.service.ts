@@ -10,7 +10,7 @@ export class PaymentService {
   //injecting http client so we can use it. 
   private http = inject(HttpClient);
   //this is to read the db when its on localhost 3k
-  private apiUrl = 'http://localhost:3000/payments';
+  private apiUrl = 'http://localhost:3000/Api/V1/Purchases';
 
   //get payments constructor to use both urls to get 
   //firstly the string to connect to the db

@@ -3,10 +3,11 @@ import { PaymentService } from '../../service/payment.service';
 import { Observable } from 'rxjs';
 import { Payment } from '../../models/payment.model';
 import { AsyncPipe } from '@angular/common';
-
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-payment-list',
-  imports: [AsyncPipe],
+  standalone:true,
+  imports: [AsyncPipe, JsonPipe],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })

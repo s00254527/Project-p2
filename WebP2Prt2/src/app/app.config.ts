@@ -7,8 +7,6 @@ import { provideHttpClient } from '@angular/common/http';
 export const appConfig: ApplicationConfig = {
   providers: [
     //you have this in your worksheet, my current completed lab
-    //works because of this im going to keep it here. 
-    provideZoneChangeDetection({eventCoalescing : true}),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes), provideHttpClient()]
 };

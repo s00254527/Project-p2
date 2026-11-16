@@ -1,12 +1,13 @@
 <h2>Payment List</h2>
 
-@if(payments$  | async; as payments){
+@if (payments$ | async; as payments) {
     <ul>
-        @for(payments of payments; track payments._id){
-            <li>{{payments.type}}{{payments.amount}}</li>
-            <li>{{payments.date}}</li>
+        @for (payment of payments; track payment._id) {
+             <pre>{{ payments | json }}</pre>
+            <li>{{ payment.type }} {{ payment.amount }}</li>
+            <li>{{ payment.date }}</li>
         }
     </ul>
-}@else {
+} @else {
     Loading Payments...
 }
