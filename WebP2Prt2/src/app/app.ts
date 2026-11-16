@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PaymentList } from './features/pyments/pages/payment-list/payment-list';
+import { PaymentList } from './features/payments/pages/payment-list/payment-list';
 
 @Component({
   selector: 'app-root',
