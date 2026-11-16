@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit ,inject} from '@angular/core';
+import { PaymentService } from '../../service/payment.service';
+import { Observable } from 'rxjs';
+import { Payment } from '../../models/payment.model';
 
 @Component({
   selector: 'app-payment-list',
@@ -6,4 +9,17 @@ import { Component } from '@angular/core';
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })
-export class PaymentList {}
+export class PaymentList implements OnInit{
+
+  //injecting the payment service into this component 
+  private paymentService = inject(PaymentService);
+
+  //getting the payment model
+  payments$!: Observable<Payment[]>;
+
+  //when the page is loaded get all of the payments from 
+  //the payment service. 
+  ngOnInit(): void {
+    this.payments$ = this.paymentService.getPayments();
+  }
+}
