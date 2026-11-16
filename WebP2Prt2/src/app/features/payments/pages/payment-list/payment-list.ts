@@ -2,10 +2,11 @@ import { Component, OnInit ,inject} from '@angular/core';
 import { PaymentService } from '../../service/payment.service';
 import { Observable } from 'rxjs';
 import { Payment } from '../../models/payment.model';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-payment-list',
-  imports: [],
+  imports: [AsyncPipe],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })

@@ -2,10 +2,11 @@ import express, {Application, Request, Response} from "express" ;
 import {env} from "./config/env";
 import PurchaseRoutes from '../src/routes/purchaseRoutes';
 import { connectDB } from "./database/db";
-
+import cors from "cors";
 
 const PORT = env.port; 
 const app: Application = express(); 
+app.use(cors());
 app.use(express.json());
 app.use('/Api/V1/Purchases', PurchaseRoutes);
 

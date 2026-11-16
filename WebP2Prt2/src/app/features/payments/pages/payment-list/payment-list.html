@@ -1,1 +1,12 @@
-<p>payment-list works!</p>
+<h2>Payment List</h2>
+
+@if(payments$  | async; as payments){
+    <ul>
+        @for(payments of payments; track payments._id){
+            <li>{{payments.type}}{{payments.amount}}</li>
+            <li>{{payments.date}}</li>
+        }
+    </ul>
+}@else {
+    Loading Payments...
+}
