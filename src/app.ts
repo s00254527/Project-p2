@@ -6,9 +6,10 @@ import cors from "cors";
 
 const PORT = env.port; 
 const app: Application = express(); 
-app.use(cors());
 app.use(express.json());
-app.use('/Api/V1/Purchases', PurchaseRoutes);
+app.use(cors());
+
+app.use('/Api/v1/Purchases', PurchaseRoutes);
 
 
 app.get("/Api/V1/Purchases", async (_req : Request, res: Response) => { 
