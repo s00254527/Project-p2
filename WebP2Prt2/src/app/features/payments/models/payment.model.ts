@@ -4,3 +4,14 @@ export interface Payment {
     amount:number;
     date:Date;
 }
+export interface CreatePaymentDto{
+    type:string;
+    amount:number;
+    date?:Date;
+
+}
+export interface UpdatePaymentDto{
+    type:string;
+    model:string;
+    date?:number;
+}
