@@ -1,0 +1,8 @@
+<div class="card">
+  <h3>{{ payment().amount }} {{ payment().type }}</h3>
+
+  @if (payment().date) {
+    <p>Year: {{ payment().date }}</p>
+  }
+  <a [routerLink]="['/payments',payment()._id]">View Details</a>
+</div>
