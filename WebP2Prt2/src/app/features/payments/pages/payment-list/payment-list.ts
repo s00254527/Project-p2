@@ -1,27 +1,23 @@
-import { Component, OnInit ,inject} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PaymentService } from '../../service/payment.service';
-import { Observable } from 'rxjs';
-import { Payment } from '../../models/payment.model';
-import { AsyncPipe } from '@angular/common';
-import { JsonPipe } from '@angular/common';
+import { PaymentCard } from '../payment-card/payment-card';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { withLoadState } from '../../../../shared/load-state';
+
 @Component({
   selector: 'app-payment-list',
   standalone:true,
-  imports: [AsyncPipe, JsonPipe],
+  imports: [PaymentCard],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })
-export class PaymentList implements OnInit{
+export class PaymentList {
 
   //injecting the payment service into this component 
   private paymentService = inject(PaymentService);
 
-  //getting the payment model
-  payments$!: Observable<Payment[]>;
-
-  //when the page is loaded get all of the payments from 
-  //the payment service. 
-  ngOnInit(): void {
-    this.payments$ = this.paymentService.getPayments();
-  }
+  //this is for the lazy loading of the state on the webpage, but im going to
+  //speed it up compared to the worksheets. 
+  state = toSignal(withLoadState(this.paymentService.getPayments()),
+{requireSync:true});
 }

@@ -1,13 +1,18 @@
-<h2>Payment List</h2>
+<div class="payment-list-container">
+  <h2>Car Inventory</h2>
 
-@if (payments$ | async; as payments) {
-    <ul>
-        @for (payment of payments; track payment._id) {
-             <pre>{{ payments | json }}</pre>
-            <li>{{ payment.type }} {{ payment.amount }}</li>
-            <li>{{ payment.date }}</li>
-        }
-    </ul>
-} @else {
-    Loading Payments...
-}
+  @let s = state();
+  @if (s.status === 'loading') {
+    <p>Loading purchases...</p>
+  } @else if (s.status === 'error') {
+    <p> {{ s.message }}</p>
+  } @else if (s.data.length === 0) {
+    <p>No purchases available at the moment.</p>
+  } @else {
+    <div class="grid">
+      @for (payment of s.data; track payment._id) {
+        <app-payment-card [payment]="payment" />
+      }
+    </div>
+  }
+</div>
