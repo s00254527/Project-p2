@@ -1,1 +1,24 @@
-<p>payment-detials works!</p>
+<h2>Purchase Detials</h2>
+
+<p>Payment Id is {{id()}}</p>
+@if(deleteError()){
+    <p class="error">{{deleteError()}}</p>
+
+}
+@let s = state();
+@if(s.status === 'loading'){
+    <a>Loading Purchase detials</a>
+
+}@else if (s.status=== 'error') {
+    <h2>{{s.message}}</h2>
+}@else {
+    <h2>{{s.data.amount}}{{s.data.type}}</h2>
+    @if(s.data.date){
+        <p>Date:{{s.data.date}}</p>
+
+    }
+   <a matButton="filled" [routerLink]="['/payments', s.data._id, 'edit']">Edit</a>
+  <button matButton="outlined" [disabled]="deleting()" (click)="deletePayment(s.data)">
+  Delete
+</button>
+}
