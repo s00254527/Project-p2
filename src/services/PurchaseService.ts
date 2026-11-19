@@ -5,7 +5,10 @@ import {HydratedDocument, model} from "mongoose";
 const Purchase = model<IPurchase>("Purchase", PurchaseModel);
 //creating the new functions to call the service and await on the data. 
 export class PurchaseService {
-    
+    //getting purches by id 
+    async getPurchaseById(id:string) : Promise<IPurchase | null> {
+        return await Purchase.findById(id).lean();
+    }
     //creating a purchase 
     async createPurchase(purchaseData: IPurchase): Promise<HydratedDocument<IPurchase>> {
         const purchase = new Purchase(purchaseData);

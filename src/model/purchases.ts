@@ -45,9 +45,17 @@ export const PurchaseModel = new Schema<IPurchase>({
 
 //this is just for testing on the routes and ensuring the data is ok. 
 export const purchaseZSchema = z.object({
-    //id: z.string(),
+    id: z.string(),
     type:z.enum( PurchaseType),//didnt import this as it caused problems 
     amount: z.number(),
     transaction:z.enum(TransactionType),//using the same enum typing for this. 
     date: z.coerce.date().min(new Date("2026-01-01")),
+});
+//this is using for checking the params entered. 
+export const purchaseParamsSchema = z.object({
+      params: z.object({
+    id: z
+      .string()
+      .regex(/^[0-9a-fA-F]{24}$/, 'Invalid ObjectId')
+  })
 });
