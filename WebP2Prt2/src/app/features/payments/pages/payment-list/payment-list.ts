@@ -3,11 +3,11 @@ import { PaymentService } from '../../service/payment.service';
 import { PaymentCard } from '../payment-card/payment-card';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { withLoadState } from '../../../../shared/load-state';
-
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-payment-list',
   standalone:true,
-  imports: [PaymentCard],
+  imports: [PaymentCard,JsonPipe],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })

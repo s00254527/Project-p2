@@ -7,8 +7,8 @@ const router = Router();
 const purchaseController = new PurchaseController();
 
 //getting all purchases
-router.get('/:id', purchaseController.getAllPurchases);
-
+router.get('/:id', purchaseController.getAllPurchasesById);
+router.get('/',purchaseController.getAllPurchases);
 //validations from the middleware that validates that I/the user can submit a purchase. 
 router.post('/', validate(purchaseZSchema), purchaseController.createPurchase);
 

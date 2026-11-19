@@ -24,6 +24,13 @@ getAllPurchases = async (_req:Request, res:Response): Promise<void> => {
         res.status(500).json({message:'Error fetching purchases',error});
     }
 };
+//getting purchases by id 
+getAllPurchasesById = async (req:Request,res:Response):Promise<void>=>{
+    try{
+        const id=Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+        const purchase = await purchaseService.get
+    }
+}
 //updating 
 updatePurchases = async (req: Request, res: Response) : Promise<void> => {
     try{

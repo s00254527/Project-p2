@@ -2,6 +2,7 @@
   <h2>Payment History</h2>
 
   @let s = state();
+  <pre>{{ s | json }}</pre>
   @if (s.status === 'loading') {
     <p>Loading purchases...</p>
   } @else if (s.status === 'error') {
@@ -14,5 +15,5 @@
         <app-payment-card [payment]="payment" />
       }
     </div>
-  }
+}
 </div>
