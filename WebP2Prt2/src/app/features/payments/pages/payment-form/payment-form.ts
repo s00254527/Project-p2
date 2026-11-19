@@ -1,6 +1,6 @@
 import { Component,inject,OnInit,signal } from '@angular/core';
 import { FormBuilder,Validator,ReactiveFormsModule,FormsModule, Validators } from '@angular/forms';
-import { CreatePaymentDto } from '../../models/payment.model';
+import { CreatePaymentDto, PurchaseType ,TransactionType} from '../../models/payment.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule,Router } from '@angular/router';
 import { PaymentService } from '../../service/payment.service';
@@ -15,6 +15,7 @@ import { input } from '@angular/core';
 import {notBlank} from '../../../../shared/validators/not-blank.validator';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
+
 @Component({
   selector: 'app-payment-form',
   imports: [
@@ -22,7 +23,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
     FormsModule,RouterModule,
     MatButtonModule,MatFormFieldModule,
     MatInputModule,MatCardModule,
-    MatProgressBarModule,MatError],
+    MatProgressBarModule],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.scss',
 })
@@ -55,12 +56,61 @@ export class PaymentForm {
 }
 
  paymentForm = this.formBuilder.nonNullable.group({
-  type: this.formBuilder.control<PaymentType | null>(null, [Validators.required]),
-  amount: this.formBuilder.control<number | null>(null, [Validators.min(0)]),
+  type: this.formBuilder.control<PurchaseType | null>(null, [Validators.required]),
+  amount: this.formBuilder.control<number | null>(null, [Validators.required,Validators.min(0),]),
+  transaction : this.formBuilder.control<TransactionType | null>(null,[Validators.required]),
   date: this.formBuilder.control<Date | null>(null, [
     this.minDate(new Date(2000, 0, 1)), // replace with whatever your minimum should be
     this.maxDate(this.currentDate),
   ]),
 });
+
+onSubmit():void{
+  if(this.paymentForm.invalid){
+    this.paymentForm.markAllAsTouched();
+    return;
+  }
+  const {type,amount,transaction,date} = this.paymentForm.getRawValue();
+  if(type === null || transaction === null || amount === null) return; //to ensure the enum is done correctly 
+ const newPurchase :CreatePaymentDto = {type ,amount ,transaction: transaction ?? undefined, date:date?? undefined }
+ const id = this.id();
+
+ const request = id
+ ? this.paymentService.updatePayment(id,newPurchase)
+ : this.paymentService.addPayment(newPurchase);
+ 
+ this.saving.set(true);
+ this.saveError.set(null);
+ request.subscribe({
+  next:(response) =>{
+    this.snackBar.open(`${newPurchase.amount}${newPurchase.type} added sucessfully!`,'Close',
+      {duration:5000});
+      console.log('Car added succesfully:',response);
+      this.router.navigate(['/payments']);
+  },
+  error:(err:Error) =>{
+    this.saveError.set(err.message);
+    this.saving.set(false);
+  },
+ });
+}
+  ngOnInit():void{
+    const id = this.id();
+
+    if(!id) return; //adding a new car 
+
+    this.paymentService.getPaymentById(id).subscribe({
+      next:(payment) =>
+        this.paymentForm.patchValue(
+          {
+            type:payment.type ,
+            amount: payment.amount,
+            transaction:payment.transaction ?? null,
+            date:payment.date ?? null
+          }
+        ),
+        error:(err:Error) => this.saveError.set(err.message), 
+    });
+  }
 
 }
