@@ -1,27 +1,27 @@
 import express, {Application, Request, Response} from "express" ; 
 import {env} from "./config/env";
 import PurchaseRoutes from '../src/routes/purchaseRoutes';
-import { connectDB } from "./database/db";
+import { purchaseZSchema } from "./model/purchases";
+import { validate } from "./middleware/auth.middleware";
 import cors from "cors";
+import { swaggerSpec } from "./config/swagger";
+import swaggerUi from 'swagger-ui-express';
 
 const PORT = env.port; 
-const app: Application = express(); 
+export const app: Application = express(); 
 app.use(express.json());
 app.use(cors());
 
-app.use('/Api/v1/Purchases', PurchaseRoutes);
+app.use('/Api/V1/Purchases', PurchaseRoutes);
+
+//these are the auth routes. 
+app.use('/Api/V1/Purchases',validate(purchaseZSchema), PurchaseRoutes);
+
+//importing swagger 
+app.use('/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec)
+);
 
 
-app.get("/Api/V1/Purchases", async (_req : Request, res: Response) => { 
-    res.json({message: "Purchases working?"}); 
-}); 
 
-//removing this as per request 
-const startServer = async() => {
-    await connectDB();
-    app.listen(PORT,() =>{
-        console.log(`Server is running on port ${PORT}`);
-    });
-};
-
-startServer();
