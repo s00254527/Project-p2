@@ -25,4 +25,30 @@ export class PaymentList {
   //speed it up compared to the worksheets. 
   state = toSignal(withLoadState(this.paymentService.getPayments()),
 {requireSync:true});
+
+//since state holds all of the data im going to make a pi chart to display all of the information and the amount of spending 
+
+readonly chart = computed(()=>{
+  const slice = this.state();//creating a slice out of the state. 
+  //if the slice isint loaded or there isint an array of slice dat a then it will return null
+  if(slice.status !== 'loaded'|| !Array.isArray(slice.data)) return null;
+
+  //creating a new totals map of each segemnt
+  const totals = new Map<string,number>();
+  //so getting the purchase data of each part of the slice. 
+  //im calling it piece as im sick of writing purchases
+  for(const piece of slice.data){
+    totals.set(piece.type,(totals.get(piece.type)?? 0)+ piece.amount);
+  }
+
+  const total = [...totals.values()].reduce((a,b) => a + b, 0);
+  if(total === 0) return null;
+
+  let start = 0;
+  
+
+
+
+
+})
 }
