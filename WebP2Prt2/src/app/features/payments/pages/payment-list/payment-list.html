@@ -13,10 +13,36 @@
   } @else if (s.data.length === 0) {
     <p>No purchases available at the moment.</p>
   } @else {
-    <div class="grid">
-      @for (payment of s.data; track payment._id) {
-        <app-payment-card [payment]="payment" />
-      }
-    </div>
+  @let c = chart();
+  @if (c) {
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Spending breakdown</mat-card-title>
+        <mat-card-subtitle>Total: {{ c.total | currency:'EUR' }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="chart-content">
+        <div class="pie" [style.background]="c.graident"
+             role="img" aria-label="Pie chart of spending by category"></div>
+
+        <ul class="legend">
+          @for (slice of c.slices; track slice.type) {
+            <li>
+              <span class="swatch" [style.background]="slice.color"></span>
+              {{ slice.type }}:
+              {{ slice.amount | currency:'EUR' }}
+              ({{ slice.fraction | percent:'1.0-1' }})
+            </li>
+          }
+        </ul>
+      </mat-card-content>
+    </mat-card>
   }
-</div>
+
+  <div class="grid">
+    @for (payment of s.data; track payment._id) {
+      <app-payment-card [payment]="payment" />
+    }
+  </div>
+}
+    </div>

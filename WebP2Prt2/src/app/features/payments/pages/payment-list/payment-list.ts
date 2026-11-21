@@ -8,7 +8,8 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
-
+import { MatCardModule } from '@angular/material/card';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 //adding the slice colours 
 const SLICE_COLOURS = [
    '#4285f4', '#ea4335', '#fbbc04', '#34a853', '#9c27b0',
@@ -18,7 +19,16 @@ const SLICE_COLOURS = [
 @Component({
   selector: 'app-payment-list',
   standalone:true,
-  imports: [PaymentCard, PaymentCard, RouterLink, MatButtonModule, MatProgressBarModule, MatFormFieldModule],
+  imports: [PaymentCard, 
+    PaymentCard, 
+    RouterLink, 
+    MatButtonModule,
+     MatProgressBarModule,
+      MatFormFieldModule,
+      MatCardModule,
+      CurrencyPipe,
+      PercentPipe
+    ],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })
@@ -35,15 +45,15 @@ export class PaymentList {
 //since state holds all of the data im going to make a pi chart to display all of the information and the amount of spending 
 
 readonly chart = computed(()=>{
-  const slice = this.state();//creating a slice out of the state. 
+  const s = this.state();//creating a slice out of the state. 
   //if the slice isint loaded or there isint an array of slice dat a then it will return null
-  if(slice.status !== 'loaded'|| !Array.isArray(slice.data)) return null;
+  if(s.status !== 'loaded'|| !Array.isArray(s.data)) return null;
 
   //creating a new totals map of each segemnt
   const totals = new Map<string,number>();
   //so getting the purchase data of each part of the slice. 
   //im calling it piece as im sick of writing purchases
-  for(const piece of slice.data){
+  for(const piece of s.data){
     totals.set(piece.type,(totals.get(piece.type)?? 0)+ piece.amount);
   }
 
@@ -67,8 +77,6 @@ readonly chart = computed(()=>{
 const graident = `conic-gradient(${slices
       .map((sl) => `${sl.color} ${sl.start}% ${sl.end}%`)
       .join(', ')})`;
-
-return {slice,total,graident};
-
+return {slices,total,graident};
 });
 }
