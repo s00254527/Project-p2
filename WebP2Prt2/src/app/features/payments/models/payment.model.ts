@@ -24,7 +24,7 @@ export interface Payment {
     type:PurchaseType;
     amount:number;
     transaction?:TransactionType;
-    date:Date;
+    date?:Date;
 }
 export interface CreatePaymentDto{
     type:PurchaseType;

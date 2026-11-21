@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { PurchaseController } from "../controllers/purchaseController";
-import { purchaseZSchema } from "../model/purchases";
+import { purchaseParamsSchema, purchaseZSchema } from "../model/purchases";
 import { validate } from "../middleware/auth.middleware";
 
 const router = Router();
@@ -17,6 +17,6 @@ router.put('/:id',purchaseController.updatePurchases);
 
 //deletion of a pruchase.Im debating deleting everything after a month but ill have to ask
 //una baout that
-router.delete('/:id',purchaseController.deletePurchase);
+router.delete('/:id',validate(purchaseParamsSchema),purchaseController.deletePurchase);
 
 export default router;

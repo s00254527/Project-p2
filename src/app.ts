@@ -22,5 +22,5 @@ app.use('/api-docs',
   swaggerUi.setup(swaggerSpec)
 );
 
-
+app.use((_req, _res, next) => setTimeout(next, 1000)); // Simulate a delay of 1 second
 

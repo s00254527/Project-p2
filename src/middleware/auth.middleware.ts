@@ -6,6 +6,11 @@ export const validate = (Schema: z.ZodObject<any>) =>(
     
  req:Request, res:Response, next:NextFunction
 ): void => {
+     // GET and DELETE have no body
+  if (req.method === 'GET' || req.method === 'DELETE') {
+    next();
+    return;
+  }
     const validation = Schema.safeParse(req.body);
     
     if(!validation.success){

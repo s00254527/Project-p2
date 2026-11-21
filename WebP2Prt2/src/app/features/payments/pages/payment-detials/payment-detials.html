@@ -37,7 +37,7 @@
         <button matButton="outlined" [disabled]="deleting()" (click)="deletePayment(s.data)">
           {{ deleting() ? 'Deleting...' : 'Delete' }}
         </button>
-        <a matButton routerLink="/payments">Back</a>
+        <a matButton [routerLink]="['/payments']">Back</a>
       </mat-card-actions>
     </mat-card>
   }
