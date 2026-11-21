@@ -25,7 +25,7 @@ readonly deleteError = signal<string | null>(null);
 //from there it grabs everything (detials) then maps it to the object on the page 
 state = toSignal(
   toObservable(this.id).pipe(
-    switchMap((id) => withLoadState(this.paymentService.getPaymentById(id)))
+    switchMap((id) => withLoadState(this.paymentService.getPaymentById(id))),
   ),
   {initialValue: this.initial},
 );

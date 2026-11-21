@@ -4,10 +4,15 @@ import { PaymentCard } from '../payment-card/payment-card';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { withLoadState } from '../../../../shared/load-state';
 import { JsonPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 @Component({
   selector: 'app-payment-list',
   standalone:true,
-  imports: [PaymentCard,JsonPipe],
+  imports: [PaymentCard],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })

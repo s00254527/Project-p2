@@ -2,21 +2,21 @@
 //im changing the api to include 2 different types, 
 //one is the category and the other is like 'cash, card, or debit'
  export enum PurchaseType{
-    Food = 'FOOD',
-    Clothes = 'CLOTHES',
-    Rent = 'RENT',
-    Drink = 'DRINK',
-    electricity= 'ELECTRICITY',
-    Washing ='WASHING',
-    Lesuire = 'LESUIRE',
-    Fuel = 'FUEL',
-    other ='OTHER'
+    Food = 'Food',
+    Clothes = 'Clothes',
+    Rent = 'Rent',
+    Drink = 'Drink',
+    electricity= 'Eelectricy',
+    Washing ='Washing',
+    Lesuire = 'Lesuire',
+    Fuel = 'Fuel',
+    other ='Other'
 }
  export enum TransactionType{ //this is optional to implement 
-Cash = 'CASH',
-Card = 'CARD',
-BANK_TRANSFER = 'BANKTRANSFER',
-Cheque = 'CHEQUE'
+Cash = 'Cash',
+Card = 'Card',
+BANK_TRANSFER = 'Bank Transfer',
+Cheque = 'Cheque'
 }
 //this is the main one
 export interface Payment {

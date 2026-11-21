@@ -1,12 +1,15 @@
 <div class="payment-list-container">
-  <h2>Payment History</h2>
+  <div class="list-header">
+    <h2>Payment History</h2>
+    <a matButton="filled" routerLink="/payments/new">Add payment</a>
+  </div>
 
   @let s = state();
-  <pre>{{ s | json }}</pre>
   @if (s.status === 'loading') {
     <p>Loading purchases...</p>
+    <mat-progress-bar mode="buffer" />
   } @else if (s.status === 'error') {
-    <p> {{ s.message }}</p>
+    <mat-error>{{ s.message }}</mat-error>
   } @else if (s.data.length === 0) {
     <p>No purchases available at the moment.</p>
   } @else {
@@ -15,5 +18,5 @@
         <app-payment-card [payment]="payment" />
       }
     </div>
-}
+  }
 </div>

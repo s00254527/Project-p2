@@ -1,8 +1,8 @@
 import { Component,inject,OnInit,signal } from '@angular/core';
-import { FormBuilder,Validator,ReactiveFormsModule,FormsModule, Validators } from '@angular/forms';
+import { FormBuilder,Validator,ReactiveFormsModule,FormsModule, Validators,NonNullableFormBuilder } from '@angular/forms';
 import { CreatePaymentDto, PurchaseType ,TransactionType} from '../../models/payment.model';
 import { CommonModule } from '@angular/common';
-import { RouterModule,Router } from '@angular/router';
+import { RouterModule,Router ,RouterLink} from '@angular/router';
 import { PaymentService } from '../../service/payment.service';
 import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -14,6 +14,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import { input } from '@angular/core';
 import {notBlank} from '../../../../shared/validators/not-blank.validator';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 
 @Component({
@@ -23,10 +26,11 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
     FormsModule,RouterModule,
     MatButtonModule,MatFormFieldModule,
     MatInputModule,MatCardModule,
-    MatProgressBarModule],
+    MatProgressBarModule,MatSelectModule],
   templateUrl: './payment-form.html',
   styleUrl: './payment-form.scss',
 })
+
 export class PaymentForm {
   public formBuilder = inject(FormBuilder);
   public paymentService = inject(PaymentService);
@@ -35,8 +39,12 @@ export class PaymentForm {
   saving = signal(false);
   saveError = signal<String | null>(null);
   readonly id = input<string>();
+
   //getting todays date 
   private readonly currentDate = new Date();//this is for the current date
+  //this is to get it displayed on the frontend 
+  readonly purchaseTypes = Object.values(PurchaseType);
+  readonly transactionTypes = Object.values(TransactionType);
 
   //had to create these for mininum date 
  minDate(min: Date): ValidatorFn {
@@ -46,6 +54,7 @@ export class PaymentForm {
     return value < min ? { minDate: { min, actual: value } } : null;
   };
 }
+
 //and max date
  maxDate(max: Date): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -56,9 +65,9 @@ export class PaymentForm {
 }
 
  paymentForm = this.formBuilder.nonNullable.group({
-  type: this.formBuilder.control<PurchaseType | null>(null, [Validators.required]),
-  amount: this.formBuilder.control<number | null>(null, [Validators.required,Validators.min(0),]),
-  transaction : this.formBuilder.control<TransactionType | null>(null,[Validators.required]),
+  type: this.formBuilder.control<PurchaseType | null>(null, Validators.required),
+  amount: this.formBuilder.control<number | null>(null, [Validators.required, Validators.min(0.01)]),
+  transaction : this.formBuilder.control<TransactionType | null>(null),
   date: this.formBuilder.control<Date | null>(null, [
     this.minDate(new Date(2000, 0, 1)), // replace with whatever your minimum should be
     this.maxDate(this.currentDate),
@@ -94,6 +103,7 @@ onSubmit():void{
   },
  });
 }
+
   ngOnInit():void{
     const id = this.id();
 
@@ -112,5 +122,4 @@ onSubmit():void{
         error:(err:Error) => this.saveError.set(err.message), 
     });
   }
-
 }
