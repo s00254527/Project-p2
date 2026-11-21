@@ -5,10 +5,15 @@ import { Observable,switchMap } from 'rxjs';
 import { LoadState,withLoadState } from '../../../../shared/load-state';
 import { toObservable,toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink,Router } from '@angular/router';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 @Component({
   selector: 'app-payment-detials',
-  imports: [RouterLink],
+  imports: [RouterLink, MatCardModule, MatButtonModule, MatProgressBarModule, CurrencyPipe, DatePipe],
   templateUrl: './payment-detials.html',
   styleUrl: './payment-detials.scss',
 })

@@ -1,24 +1,44 @@
-<h2>Purchase Detials</h2>
+<div class="payment-details-container">
+  <h2>Purchase Details</h2>
 
-<p>Payment Id is {{id()}}</p>
-@if(deleteError()){
-    <p class="error">{{deleteError()}}</p>
+  @if (deleteError()) {
+    <p class="error">{{ deleteError() }}</p>
+  }
 
-}
-@let s = state();
-@if(s.status === 'loading'){
-    <a>Loading Purchase detials</a>
+  @let s = state();
+  @if (s.status === 'loading') {
+    <p>Loading purchase details...</p>
+    <mat-progress-bar mode="buffer" />
+  } @else if (s.status === 'error') {
+    <p class="error">{{ s.message }}</p>
+    <a matButton routerLink="/payments">Back to payments</a>
+  } @else {
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>{{ s.data.amount | currency:'EUR' }}</mat-card-title>
+        <mat-card-subtitle>{{ s.data.type }}</mat-card-subtitle>
+      </mat-card-header>
 
-}@else if (s.status=== 'error') {
-    <h2>{{s.message}}</h2>
-}@else {
-    <h2>{{s.data.amount}}{{s.data.type}}</h2>
-    @if(s.data.date){
-        <p>Date:{{s.data.date}}</p>
+      <mat-card-content>
+        @if (s.data.transaction) {
+          <p>Method: {{ s.data.transaction }}</p>
+        }
+        @if (s.data.date) {
+          <p>Date: {{ s.data.date | date:'mediumDate' }}</p>
+        }
+      </mat-card-content>
 
-    }
-   <a matButton="filled" [routerLink]="['/payments', s.data._id, 'edit']">Edit</a>
-  <button matButton="outlined" [disabled]="deleting()" (click)="deletePayment(s.data)">
-  Delete
-</button>
-}
+      @if (deleting()) {
+        <mat-progress-bar mode="buffer" />
+      }
+
+      <mat-card-actions>
+        <a matButton="filled" [routerLink]="['/payments', s.data._id, 'edit']">Edit</a>
+        <button matButton="outlined" [disabled]="deleting()" (click)="deletePayment(s.data)">
+          {{ deleting() ? 'Deleting...' : 'Delete' }}
+        </button>
+        <a matButton routerLink="/payments">Back</a>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

@@ -75,6 +75,7 @@ export class PaymentForm {
 });
 
 onSubmit():void{
+  
   if(this.paymentForm.invalid){
     this.paymentForm.markAllAsTouched();
     return;
@@ -102,6 +103,7 @@ onSubmit():void{
     this.saving.set(false);
   },
  });
+ console.log('sending:', DocumentTimeline);
 }
 
   ngOnInit():void{

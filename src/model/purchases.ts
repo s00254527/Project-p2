@@ -1,24 +1,24 @@
 import {Schema } from "mongoose";
 import { z } from "zod";
-
+import coerce from '@codemirror/commands';
 
 //was advised to create an enum
 enum PurchaseType{
-    Food = 'FOOD',
-    Clothes = 'CLOTHES',
-    Rent = 'RENT',
-    Drink = 'DRINK',
-    electricity= 'ELECTRICITY',
-    Washing ='WASHING',
-    Lesuire = 'LESUIRE',
-    Fuel = 'FUEL',
-    other ='OTHER'
+    Food = 'Food',
+    Clothes = 'Clothes',
+    Rent = 'Rent',
+    Drink = 'Drink',
+    electricity= 'Eelectricy',
+    Washing ='Washing',
+    Lesuire = 'Lesuire',
+    Fuel = 'Fuel',
+    other ='Other'
 }
  enum TransactionType{ //this is optional to implement 
-Cash = 'CASH',
-Card = 'CARD',
-BANK_TRANSFER = 'BANKTRANSFER',
-Cheque = 'CHEQUE'
+Cash = 'Cash',
+Card = 'Card',
+BANK_TRANSFER = 'Bank Transfer',
+Cheque = 'Cheque'
 }
 
 export interface IPurchase{
@@ -28,8 +28,8 @@ export interface IPurchase{
     //id: string;//id for the id of the purchase
     type: PurchaseType;//type of purchase, e.g. "food"
     amount: number;//amount of the purchase
-    transaction:TransactionType;//type of monitary useage for the transaction
-    date: Date;//date of the purchase - this is for the monthly expenditure 
+    transaction?:TransactionType;//type of monitary useage for the transaction
+    date?: Date;//date of the purchase - this is for the monthly expenditure 
 }
 
 //this is the required model. Making it ensure that we have all of the information before we push
@@ -40,16 +40,15 @@ export const PurchaseModel = new Schema<IPurchase>({
     type: { type: String, enum: Object.values(PurchaseType), required: true },
     amount: { type: Number, required: true },
     transaction:{type:String, enum: Object.values(TransactionType),required:false},
-    date: { type: Date, required: true },
+    date: { type: Date, required: false },
 }); //removed timestamp as theres no need for it 
 
 //this is just for testing on the routes and ensuring the data is ok. 
 export const purchaseZSchema = z.object({
-    id: z.string(),
     type:z.enum( PurchaseType),//didnt import this as it caused problems 
-    amount: z.number(),
-    transaction:z.enum(TransactionType),//using the same enum typing for this. 
-    date: z.coerce.date().min(new Date("2026-01-01")),
+    amount: z.number().positive(),//ensure the number is posotive 
+    transaction:z.enum(TransactionType).optional(),//using the same enum typing for this. also ensreing its optional. 
+    date: z.coerce.date().min(new Date("2026-01-01")).optional(),
 });
 //this is using for checking the params entered. 
 export const purchaseParamsSchema = z.object({
