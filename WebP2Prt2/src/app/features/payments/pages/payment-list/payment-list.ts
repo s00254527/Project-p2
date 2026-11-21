@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed,inject } from '@angular/core';
 import { PaymentService } from '../../service/payment.service';
 import { PaymentCard } from '../payment-card/payment-card';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -8,6 +8,12 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+
+//adding the slice colours 
+const SLICE_COLOURS = [
+   '#4285f4', '#ea4335', '#fbbc04', '#34a853', '#9c27b0',
+  '#ff7043', '#00acc1', '#8d6e63', '#78909c',
+];
 
 @Component({
   selector: 'app-payment-list',
@@ -45,10 +51,24 @@ readonly chart = computed(()=>{
   if(total === 0) return null;
 
   let start = 0;
-  
+  const slices = [...totals.entries()]
+  .sort((a,b) => b[1]-a[1])//bigger slices first 
+  .map(([type,amount],i)=>{
+  const fraction = amount/total;
+  const slice ={
+    type,amount,fraction,
+    color: SLICE_COLOURS[i % SLICE_COLOURS.length],
+    start,
+    end:start + fraction *100,
+  };
+  start = slice.end;
+  return slice;
+  });
+const graident = `conic-gradient(${slices
+      .map((sl) => `${sl.color} ${sl.start}% ${sl.end}%`)
+      .join(', ')})`;
 
+return {slice,total,graident};
 
-
-
-})
+});
 }
