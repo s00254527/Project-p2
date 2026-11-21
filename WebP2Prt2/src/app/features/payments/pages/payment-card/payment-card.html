@@ -1,8 +1,19 @@
-<div class="card">
-  <h3>{{ payment().amount }} {{ payment().type }}</h3>
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>{{ payment().amount | currency:'EUR' }}</mat-card-title>
+    <mat-card-subtitle>{{ payment().type }}</mat-card-subtitle>
+  </mat-card-header>
 
-  @if (payment().date) {
-    <p>Year: {{ payment().date }}</p>
-  }
-  <a [routerLink]="['/payments',payment()._id]">View Details</a>
-</div>
+  <mat-card-content>
+    @if (payment().transaction) {
+      <p>Method: {{ payment().transaction }}</p>
+    }
+    @if (payment().date) {
+      <p>Date: {{ payment().date | date:'mediumDate' }}</p>
+    }
+  </mat-card-content>
+
+  <mat-card-actions>
+    <a matButton [routerLink]="['/payments', payment()._id]">View details</a>
+  </mat-card-actions>
+</mat-card>

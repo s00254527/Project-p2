@@ -6,7 +6,7 @@ import { PaymentDetials } from './features/payments/pages/payment-detials/paymen
 export const routes: Routes = [
     {path:'',redirectTo:'payments',pathMatch:'full'},
     {path:'payments',component:PaymentList},
-    {path:'payments/new', component:PaymentDetials},
+    {path:'payments/new', component:PaymentForm},
     {path:'payments/:id',component:PaymentDetials},
     {path:'payments/:id/edit',component:PaymentForm},
     

@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-payment-list',
   standalone:true,
-  imports: [PaymentCard],
+  imports: [PaymentCard, PaymentCard, RouterLink, MatButtonModule, MatProgressBarModule, MatFormFieldModule],
   templateUrl: './payment-list.html',
   styleUrl: './payment-list.scss',
 })
