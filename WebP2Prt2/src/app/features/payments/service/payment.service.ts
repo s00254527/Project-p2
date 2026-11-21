@@ -44,7 +44,7 @@ updatePayment(id:string, changes:UpdatePaymentDto):Observable<Payment>{
 
 
 deletePayment(id:string):Observable<void>{
-  return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
 }
 
   //this is the handle error method that you gave us and im passing it into this. 

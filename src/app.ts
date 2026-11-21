@@ -11,8 +11,6 @@ export const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/Api/V1/Purchases', PurchaseRoutes);
-
 //these are the auth routes. 
 app.use('/Api/V1/Purchases',validate(purchaseZSchema), PurchaseRoutes);
 

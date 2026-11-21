@@ -9,7 +9,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
+ import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-payment-detials',
@@ -43,14 +43,13 @@ deletePayment(payment:Payment):void{
   if(!confirm(`Delete${payment.amount}${payment.type}?`)) return;
   this.deleting.set(true);
   this.deleteError.set(null);
-  this.paymentService.deletePayment(payment._id!).subscribe({
-    //this is to bring it back to /payments page 
-    //where we set the delete to false 
-    next:() => this.router.navigate(['/payments']),
-    error:(error) =>{
-      this.deleteError.set(error.message);
-      this.deleting.set(false);
-    }
+
+
+this.paymentService.deletePayment(payment._id!)
+  .pipe(finalize(() => this.deleting.set(false)))
+  .subscribe({
+    next: () => this.router.navigate(['/payments']),
+    error: (e) => this.deleteError.set(e.message),
   });
 }
 

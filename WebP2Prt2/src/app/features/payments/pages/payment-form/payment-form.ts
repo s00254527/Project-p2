@@ -81,7 +81,7 @@ onSubmit():void{
     return;
   }
   const {type,amount,transaction,date} = this.paymentForm.getRawValue();
-  if(type === null || transaction === null || amount === null) return; //to ensure the enum is done correctly 
+  if(type === null || amount === null) return; //to ensure the enum is done correctly 
  const newPurchase :CreatePaymentDto = {type ,amount ,transaction: transaction ?? undefined, date:date?? undefined }
  const id = this.id();
 
@@ -103,7 +103,7 @@ onSubmit():void{
     this.saving.set(false);
   },
  });
- console.log('sending:', DocumentTimeline);
+ console.log('sending:',newPurchase);
 }
 
   ngOnInit():void{
@@ -118,7 +118,7 @@ onSubmit():void{
             type:payment.type ,
             amount: payment.amount,
             transaction:payment.transaction ?? null,
-            date:payment.date ?? null
+            date:payment.date ? new Date(String(payment.date).slice(0, 10)) : null
           }
         ),
         error:(err:Error) => this.saveError.set(err.message), 
